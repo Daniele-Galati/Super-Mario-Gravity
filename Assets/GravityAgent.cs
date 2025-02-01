@@ -1,10 +1,12 @@
 using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 [RequireComponent(typeof(GameObject))]
 public class GravityAgent : MonoBehaviour
 {
+    [SerializeField] private float rotationSpeed = 10f;
 
     private List<GravityField> touchingFields = new List<GravityField>();
     private GravityField priorityField;
@@ -20,10 +22,12 @@ public class GravityAgent : MonoBehaviour
     private void FixedUpdate()
     {
         gravityDirection = CalculateGravityVector(priorityField);
-
         rb.AddForce(gravityDirection * rb.mass);
+
+        RotateTowardsGravity(gravityDirection);
     }
 
+    #region Trigger collisions
     private void OnTriggerEnter(Collider other)
     {
         if (other.GetComponent<GravityField>() != null)
@@ -52,6 +56,7 @@ public class GravityAgent : MonoBehaviour
             priorityField = DeterminePriorityField();
         }
     }
+    #endregion
 
     private GravityField DeterminePriorityField()
     {
@@ -84,5 +89,14 @@ public class GravityAgent : MonoBehaviour
         }
 
         return Vector3.zero;
+    }
+
+    private void RotateTowardsGravity(Vector3 gravityDir)
+    {
+        Vector3 upDir = -gravityDir;
+        Vector3 currentUp = transform.up;
+
+        Quaternion targetRotation = Quaternion.FromToRotation(currentUp, upDir) * transform.rotation;
+        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.fixedDeltaTime);
     }
 }
