@@ -8,11 +8,11 @@ public class GravityField : MonoBehaviour
     public FieldType fieldType;
 }
 
-
 public enum FieldType
 {
     spherical,
     directional,
+    cylinder,
     transition
 
 }

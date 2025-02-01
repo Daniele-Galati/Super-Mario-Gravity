@@ -91,8 +91,10 @@ public class GravityAgent : MonoBehaviour
                     return direction.normalized * field.gravityStrength;
                 case FieldType.directional:
                     return field.GetComponent<DirectionalField>().gravityVector;
-                case FieldType.transition:
-                    return Vector3.zero;
+                case FieldType.cylinder:
+                    Vector3 radialDir = Vector3.ProjectOnPlane(field.transform.position - transform.position, field.transform.right);
+                    Debug.Log(radialDir);
+                    return radialDir;
 
             }
             
