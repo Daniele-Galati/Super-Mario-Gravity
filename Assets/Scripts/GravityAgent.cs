@@ -96,9 +96,10 @@ public class GravityAgent : MonoBehaviour
                     Debug.Log(radialDir);
                     return radialDir;
                 case FieldType.transition:
+                    // get direction from the player to the gravity origin, projected on a plane that is perpendicular to the surface normal
                     GameObject gravityOrigin = field.GetComponent<TransitionField>().gravityOrigin;
-                    Vector3 dir = Vector3.ProjectOnPlane(-gravityOrigin.transform.position + transform.position,gravityOrigin.transform.right);
-                    return dir;
+                    Vector3 transitionDir = Vector3.ProjectOnPlane(-gravityOrigin.transform.position + transform.position,gravityOrigin.transform.right);
+                    return transitionDir;
 
             }
             
