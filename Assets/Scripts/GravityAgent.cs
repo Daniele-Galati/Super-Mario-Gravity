@@ -95,6 +95,10 @@ public class GravityAgent : MonoBehaviour
                     Vector3 radialDir = Vector3.ProjectOnPlane(field.transform.position - transform.position, field.transform.up);
                     Debug.Log(radialDir);
                     return radialDir;
+                case FieldType.transition:
+                    GameObject gravityOrigin = field.GetComponent<TransitionField>().gravityOrigin;
+                    Vector3 dir = Vector3.ProjectOnPlane(-gravityOrigin.transform.position + transform.position,gravityOrigin.transform.right);
+                    return dir;
 
             }
             
