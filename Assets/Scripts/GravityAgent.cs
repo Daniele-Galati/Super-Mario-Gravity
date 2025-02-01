@@ -112,12 +112,12 @@ public class GravityAgent : MonoBehaviour
         RaycastHit hit;
         Physics.Raycast(transform.position, gravityDir, out hit, 5f);
 
-        /*
+        
         if (hit.collider != null)
         {
             Vector3 planeNormal = hit.normal;
             upDir = planeNormal;
-        }*/
+        }
 
         // smooth rotation towards local up (plane normal only if there is a plane underneath)
         Quaternion targetRotation = Quaternion.FromToRotation(currentUp, upDir) * transform.rotation;

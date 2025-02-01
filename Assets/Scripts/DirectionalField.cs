@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class DirectionalField : GravityField
 {
-    public Vector3 gravityVector;
+    [System.NonSerialized] public Vector3 gravityVector;
 
     private void Start()
     {
@@ -13,11 +13,15 @@ public class DirectionalField : GravityField
     private void OnDrawGizmos()
     {
         BoxCollider collider = GetComponent<BoxCollider>();
-        if (collider != null)
+        MeshFilter meshFilter = GetComponent<MeshFilter>();
+
+        if (collider != null && meshFilter != null)
         {
+            Mesh mesh = meshFilter.sharedMesh;
+
             Vector3 size = collider.size;
             Gizmos.color = new Color(0, 100, 0, 0.2f);
-            Gizmos.DrawCube(transform.position, size);
+            Gizmos.DrawMesh(mesh, transform.position,transform.rotation, size);
 
             // draw gravity direction indicator
             Gizmos.color = new Color(0, 100, 0, 1f);
