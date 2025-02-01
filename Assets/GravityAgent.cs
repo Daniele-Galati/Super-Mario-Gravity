@@ -84,8 +84,18 @@ public class GravityAgent : MonoBehaviour
 
         if (field != null)
         {
-            Vector3 direction = field.transform.position - transform.position;
-            return direction * field.gravityStrength;
+            switch (field.fieldType)
+            {
+                case FieldType.spherical:
+                    Vector3 direction = field.transform.position - transform.position;
+                    return direction.normalized * field.gravityStrength;
+                case FieldType.directional:
+                    return field.GetComponent<DirectionalField>().gravityVector;
+                case FieldType.transition:
+                    return Vector3.zero;
+
+            }
+            
         }
 
         return Vector3.zero;
@@ -96,6 +106,7 @@ public class GravityAgent : MonoBehaviour
         Vector3 upDir = -gravityDir;
         Vector3 currentUp = transform.up;
 
+        // smooth rotation towards local up
         Quaternion targetRotation = Quaternion.FromToRotation(currentUp, upDir) * transform.rotation;
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.fixedDeltaTime);
     }
