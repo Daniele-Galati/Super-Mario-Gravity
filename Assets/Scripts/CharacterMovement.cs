@@ -13,7 +13,7 @@ public class CharacterMovement : MonoBehaviour
 
     [SerializeField] Camera cam;
 
-    [SerializeField] float speed;
+    [SerializeField] float acceleration;
     [SerializeField] float maxSpeed;
 
     void Start()
@@ -42,7 +42,7 @@ public class CharacterMovement : MonoBehaviour
             Vector3 movementDirection = xMov * cameraRight + zMov * cameraForward;
 
             movementDirection = Vector3.ProjectOnPlane(movementDirection,planeNormal).normalized;
-            rb.AddForce(movementDirection * speed, ForceMode.Force);
+            rb.AddForce(movementDirection * acceleration, ForceMode.Force);
         }
 
         // max speed control
