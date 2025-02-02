@@ -19,7 +19,7 @@ public class CharacterInput : MonoBehaviour
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        //if (context.started)
-            //movement.JumpRequested();
+        if (context.started)
+            movement.JumpRequested();
     }
 }

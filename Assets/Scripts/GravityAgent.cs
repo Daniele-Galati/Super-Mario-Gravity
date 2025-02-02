@@ -24,7 +24,8 @@ public class GravityAgent : MonoBehaviour
         gravityDirection = CalculateGravityVector(priorityField);
         rb.AddForce(gravityDirection * rb.mass);
 
-        RotateTowardsGravity(gravityDirection);
+        if (priorityField != null)
+            RotateTowardsGravity(gravityDirection, priorityField);
     }
 
     #region Trigger collisions
@@ -93,7 +94,6 @@ public class GravityAgent : MonoBehaviour
                     return field.GetComponent<DirectionalField>().gravityVector;
                 case FieldType.cylinder:
                     Vector3 radialDir = Vector3.ProjectOnPlane(field.transform.position - transform.position, field.transform.up);
-                    Debug.Log(radialDir);
                     return radialDir;
                 case FieldType.transition:
                     // get direction from the player to the gravity origin, projected on a plane that is perpendicular to the surface normal
@@ -108,11 +108,15 @@ public class GravityAgent : MonoBehaviour
         return Vector3.zero;
     }
 
-    private void RotateTowardsGravity(Vector3 gravityDir)
+    private void RotateTowardsGravity(Vector3 gravityDir, GravityField field)
     {
         Vector3 currentUp = transform.up;
+        Vector3 upDir = -gravityDir;
 
-        Vector3 upDir = FindNormal(gravityDir);
+        // only if the field is not a cylinder or a directional type try to find the plane normal
+        // (because in these types the player MUST orientate towards the gravity direction only, not the normal)
+        if (field.fieldType != FieldType.cylinder && field.fieldType != FieldType.directional)
+            upDir = FindNormal(gravityDir);
 
         // smooth rotation towards local up (plane normal only if there is a plane underneath)
         Quaternion targetRotation = Quaternion.FromToRotation(currentUp, upDir) * transform.rotation;
@@ -133,5 +137,10 @@ public class GravityAgent : MonoBehaviour
         }
 
         return -gravityDir;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawRay(transform.position, gravityDirection);
     }
 }
