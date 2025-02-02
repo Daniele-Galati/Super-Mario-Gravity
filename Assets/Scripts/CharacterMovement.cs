@@ -32,14 +32,17 @@ public class CharacterMovement : MonoBehaviour
             float xMov = input.move.x;
             float zMov = input.move.y;
 
-            // project the input on the underneath surface (normal taken from the gravityAgent)
             Vector3 planeNormal = gravityAgent.FindNormal(gravityAgent.gravityDirection);
-            Vector3 movementDirection = xMov * transform.right + zMov * transform.forward;
+
+            // project camera forward onto the normal plane
+            Vector3 cameraForward = Vector3.ProjectOnPlane(cam.transform.forward, planeNormal);
+            Vector3 cameraRight = Vector3.ProjectOnPlane(cam.transform.right, planeNormal);
+
+            // project the input on the underneath surface (normal taken from the gravityAgent)
+            Vector3 movementDirection = xMov * cameraRight + zMov * cameraForward;
 
             movementDirection = Vector3.ProjectOnPlane(movementDirection,planeNormal).normalized;
             rb.AddForce(movementDirection * speed, ForceMode.Force);
-
-            Debug.Log("Input");
         }
 
         // max speed control
