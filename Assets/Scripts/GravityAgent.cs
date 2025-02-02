@@ -10,9 +10,9 @@ public class GravityAgent : MonoBehaviour
 
     private List<GravityField> touchingFields = new List<GravityField>();
     private GravityField priorityField;
-
-    private Vector3 gravityDirection = Vector3.down;
     private Rigidbody rb;
+
+    [System.NonSerialized] public Vector3 gravityDirection = Vector3.down;
 
     private void Start()
     {
@@ -110,22 +110,28 @@ public class GravityAgent : MonoBehaviour
 
     private void RotateTowardsGravity(Vector3 gravityDir)
     {
-        Vector3 upDir = -gravityDir;
         Vector3 currentUp = transform.up;
 
-        // get underneath surface normal
-        RaycastHit hit;
-        Physics.Raycast(transform.position, gravityDir, out hit, 5f);
-
-        
-        if (hit.collider != null)
-        {
-            Vector3 planeNormal = hit.normal;
-            upDir = planeNormal;
-        }
+        Vector3 upDir = FindNormal(gravityDir);
 
         // smooth rotation towards local up (plane normal only if there is a plane underneath)
         Quaternion targetRotation = Quaternion.FromToRotation(currentUp, upDir) * transform.rotation;
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.fixedDeltaTime);
+    }
+
+    public Vector3 FindNormal(Vector3 gravityDir)
+    {
+        // get underneath surface normal
+        RaycastHit hit;
+        Physics.Raycast(transform.position, gravityDir, out hit, 5f);
+
+
+        if (hit.collider != null)
+        {
+            Vector3 planeNormal = hit.normal;
+            return planeNormal;
+        }
+
+        return -gravityDir;
     }
 }
