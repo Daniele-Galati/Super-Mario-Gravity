@@ -1,4 +1,4 @@
-# Super-Mario-Gravity
+# Super Mario Gravity
 A simple system that replicates Super Mario Galaxy's gravitational fields
 
 ## How does it work
