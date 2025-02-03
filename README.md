@@ -22,5 +22,5 @@ It automatically orients itself to stand up on the underneath plane normal or, i
 
 In the demo scene is already implemented a player that uses the gravity agent script, but it can be used on any game object with a rigidbody attached.
 
-### Further improvements
+## Further improvements
 The main issue is that the player can orbit too easily. A simple fix would be to introduce a suction force that keeps the player grounded. However, this force should deactivate when the player jumps to ensure smooth movement and prevent any interference.
