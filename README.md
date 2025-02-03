@@ -14,8 +14,13 @@ Each field is color coded differently in the scene to understand immediately wha
 
 If two fields are colliding with each other, in the inspector it is possible to sort them by priority (the agents will be attracted from the highest priority field).
 
+P.S. The cylindrical field can be also used inside a _spline instantiate_ script to make the field follow a spline. A simple example can be found inside the Donut Planet prefab.
+
 ### Gravity Agents
 The gravity agent is an object that is subject to gravity fields.
 It automatically orients itself to stand up on the underneath plane normal or, in case the field is cylindrical/directional, its orientation depends solely on the gravity direction.
 
 In the demo scene is already implemented a player that uses the gravity agent script, but it can be used on any game object with a rigidbody attached.
+
+### Further improvements
+The main issue is that the player can orbit too easily. A simple fix would be to introduce a suction force that keeps the player grounded. However, this force should deactivate when the player jumps to ensure smooth movement and prevent any interference.
